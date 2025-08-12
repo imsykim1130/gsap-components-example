@@ -1,0 +1,7 @@
+.show {
+  clip-path: var(--show);
+}
+
+.hide-to-top {
+  clip-path: var(--hide-to-top);
+}
