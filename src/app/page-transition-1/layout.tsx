@@ -5,11 +5,17 @@ import { Cabin, DM_Mono } from "next/font/google";
 
 const dmMono = DM_Mono({
   variable: "--font-dm-mono",
+  subsets: ["latin"],
   weight: "500",
+  style: "normal",
+  display: "swap",
 });
 
 const cabin = Cabin({
   variable: "--font-cabin",
+  subsets: ["latin"],
+  style: "normal",
+  display: "swap",
 });
 
 const Layout = ({
