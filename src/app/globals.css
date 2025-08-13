@@ -5,3 +5,8 @@
   --hide-to-bottom: inset(100% 0 0 0);
   --hide-to-top: inset(0 0 100% 0);
 }
+
+@theme {
+  --color-black: #141414;
+  --color-green-white: #e3e4d8;
+}

@@ -1,14 +1,16 @@
 "use client";
-import { useGSAP } from "@gsap/react";
 import { ReactNode, useEffect, useRef, useState } from "react";
+import Link from "next/link";
+// gsap
+import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
+// react icons
 import { IoLogoDribbble, IoLogoInstagram } from "react-icons/io";
 import { RxNotionLogo } from "react-icons/rx";
 import { MdArrowOutward } from "react-icons/md";
-import "./header1.css";
 
 const Header1 = () => {
-  const [open, setOpen] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false); // nav 상태
   const nav = useRef<HTMLElement>(null);
   const navTl = useRef<gsap.core.Timeline>(null);
 
@@ -69,15 +71,29 @@ const Header1 = () => {
       {/* navigation */}
       <nav
         ref={nav}
-        className={`absolute z-0 top-0 left-0 w-full h-screen flex flex-col md:flex-row justify-between hide-to-top bg-blue-300 pt-30 pb-10 px-10 md:px-50`}
+        className={`absolute z-0 top-0 left-0 w-full h-screen flex flex-col md:flex-row justify-between bg-blue-300 pt-30 pb-10 px-10 md:px-50`}
+        style={{
+          clipPath: "inset(0% 100% 0% 0%)",
+        }}
       >
         <ul className="space-y-1 text-6xl md:text-7xl font-light md:min-w-90">
           {menuList.map((menu) => (
             <li
               key={menu}
-              className="cursor-pointer w-full leading-14 tracking-tighter show transition-all duration-500 ease-in-out hover:translate-x-5"
+              className="cursor-pointer w-full leading-14 tracking-tighter transition-all duration-500 ease-in-out hover:translate-x-5"
+              style={{
+                clipPath: "inset(0 0 0 0)",
+              }}
             >
-              <p className="menu origin-top-left">{menu}</p>
+              <Link
+                href="/header-1"
+                className="menu block origin-top-left"
+                onClick={() => {
+                  setOpen(false);
+                }}
+              >
+                {menu}
+              </Link>
             </li>
           ))}
         </ul>

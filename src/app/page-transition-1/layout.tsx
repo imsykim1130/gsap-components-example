@@ -1,0 +1,29 @@
+import Nav1 from "@/components/nav/Nav1";
+import PageTransition1 from "@/components/PageTransition1";
+
+import { Cabin, DM_Mono } from "next/font/google";
+
+const dmMono = DM_Mono({
+  variable: "--font-dm-mono",
+  weight: "500",
+});
+
+const cabin = Cabin({
+  variable: "--font-cabin",
+});
+
+const Layout = ({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) => {
+  return (
+    <main className="font-[cabin]">
+      <PageTransition1>
+        <Nav1 />
+        {children}
+      </PageTransition1>
+    </main>
+  );
+};
+export default Layout;
