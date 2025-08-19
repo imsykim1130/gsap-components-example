@@ -32,6 +32,8 @@ gsap 라이브러리를 이용하여 애니메이션이 적용된 다양한 컴�
 
 ## ✅ Hero 2
 
+🔥 https://gsap-components-example.vercel.app/hero/2
+
 ### What I Learned
 
 - css 의 perspective 를 이용하여 3d 처럼 보이도록 구현
