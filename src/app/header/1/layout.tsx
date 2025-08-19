@@ -1,4 +1,4 @@
-import Header1 from "@/components/header/Header1";
+import Header1 from "@/app/header/1/(components)/Header1";
 
 const Layout = ({
   children,

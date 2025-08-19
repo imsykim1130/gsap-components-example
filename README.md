@@ -4,7 +4,7 @@ gsap 라이브러리를 이용하여 애니메이션이 적용된 다양한 컴�
 
 ## ✅ Header1
 
-🔥 https://gsap-components-example.vercel.app/header-1
+🔥 https://gsap-components-example.vercel.app/header/1
 
 ### required package
 
@@ -17,7 +17,7 @@ gsap 라이브러리를 이용하여 애니메이션이 적용된 다양한 컴�
 
 ## ✅ Page transition 1
 
-🔥 https://gsap-components-example.vercel.app/page-transition-1
+🔥 https://gsap-components-example.vercel.app/page-transition/1
 
 ### required package
 
