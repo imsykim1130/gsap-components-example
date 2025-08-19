@@ -24,7 +24,7 @@ const Layout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <main className="font-[cabin]">
+    <main className={`${cabin.className} ${dmMono.variable}`}>
       <PageTransition1>
         <Nav1 />
         {children}

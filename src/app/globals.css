@@ -7,6 +7,11 @@
 }
 
 @theme {
+  /* color */
   --color-black: #141414;
   --color-green-white: #e3e4d8;
+  --color-green: #ceea51;
+
+  /* font */
+  --font-bebas-neue: var(--font-bebas-neue);
 }
