@@ -1,7 +1,6 @@
-import Nav1 from "@/app/page-transition/1/(components)/Nav1";
-
 import { Cabin, DM_Mono } from "next/font/google";
 import PageTransition1 from "./(components)/PageTransition1";
+import Nav1 from "./(components)/Nav1";
 
 const dmMono = DM_Mono({
   variable: "--font-dm-mono",
