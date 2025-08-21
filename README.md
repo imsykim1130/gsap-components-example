@@ -58,3 +58,13 @@ perspective 를 적용하면 z 값에 따라 요소가 작아 보이거나 커 �
 [perspective 200px]
 
 ![persepctive 200px](public/image-1.png)
+
+## ✅ Card 1
+
+🔥 https://gsap-components-example.vercel.app/card/1
+
+카드 컴포넌트 추가, 삭제 시 유저에게 어떤 카드 컴포넌트에 행위가 적용되고 있는지 알려주는 마이크로 인터렉션 구현
+
+### What I Learned
+
+- ::after, ::before 요소를 활용하여 border 색상, 배경 색상 변경 애니메이션 구현
