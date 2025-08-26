@@ -14,6 +14,7 @@
 
   /* font */
   --font-bebas-neue: var(--font-bebas-neue);
+  --font-montserrat: var(--font-montserrat);
 }
 
 @layer base {

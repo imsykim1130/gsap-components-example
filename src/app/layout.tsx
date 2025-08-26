@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Bebas_Neue } from "next/font/google";
+import { Bebas_Neue, Montserrat } from "next/font/google";
 
 const bebasNeue = Bebas_Neue({
   variable: "--font-bebas-neue",
   weight: "400",
+  subsets: ["latin"],
+  style: "normal",
+  display: "swap",
+});
+
+const montserrat = Montserrat({
+  variable: "--font-montserrat",
+  weight: ["400", "500", "600", "700", "800"],
   subsets: ["latin"],
   style: "normal",
   display: "swap",
@@ -22,7 +30,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`antialiased ${bebasNeue.variable}`}>{children}</body>
+      <body
+        className={`antialiased ${bebasNeue.variable} ${montserrat.variable}`}
+      >
+        {children}
+      </body>
     </html>
   );
 }
