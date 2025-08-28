@@ -143,26 +143,48 @@ const Menu = ({title, subMenus = ["Safeguarding against fraud",
   return (
     <div className="flex gap-15 font-medium cursor-pointer mt-10">
       <p className="text-neutral-400 text-[0.9rem] translate-y-2">01</p>
-      <div className="flex flex-1 flex-col border-b-[1px] border-neutral-200 pb-10">
+      <div className="flex-1 flex flex-col border-b-[1px] gap-10 border-neutral-200">
         <div className="flex justify-between">
-          <Link href={""} className={`relative text-2xl lg:text-4xl font-semibold`}>
+          <Link
+            href={""}
+            className={`relative text-2xl lg:text-4xl font-semibold`}
+          >
             {title}
-            <span className="absolute text-[0.9rem] text-neutral-400 flex justify-center items-center top-[-0.2rem] right-[-2.2rem] size-7 rounded-full border-[1px] border-neutral-200">{subMenus.length}</span>
+            <span className="absolute text-[0.9rem] text-neutral-400 flex justify-center items-center top-[-0.2rem] right-[-2.2rem] size-7 rounded-full border-[1px] border-neutral-200">
+              {subMenus.length}
+            </span>
           </Link>
-          <div className={`border-[1px] border-neutral-200 object-center w-8 h-8 hover:w-12 hover:bg-orange-500 hover:text-white rounded-full flex items-center justify-center transform-content duration-500 ease-in-out`} onClick={() => setSubOpen(!subOpen)}>
-            <Arrow className={`${subOpen ? 'rotate-180' : 'rotate-0'} transition-transform duration-200 ease-in-out`}/>
+          <div
+            className={`border-[1px] border-neutral-200 object-center w-8 h-8 hover:w-12 hover:bg-orange-500 hover:text-white rounded-full flex items-center justify-center transform-content duration-500 ease-in-out`}
+            onClick={() => setSubOpen(!subOpen)}
+          >
+            <Arrow
+              className={`${
+                subOpen ? "rotate-180" : "rotate-0"
+              } transition-transform duration-200 ease-in-out`}
+            />
           </div>
         </div>
-        {subMenus.length > 0 && (<ul className={`${subOpen ? 'flex' : 'hidden'} flex-col gap-5 pt-10 text-[0.9rem] text-neutral-400 font-semibold`}>
-          {subMenus.map((menu) => (
-            <li
-              key={menu}
-              className="hover:text-neutral-700 transition-color"
+        {subMenus.length > 0 && (
+          <div
+            className={`grid ${
+              subOpen ? "grid-rows-[1fr] pb-10" : "grid-rows-[0fr]"
+            } transition-[grid-template-rows] duration-300 ease-in-out overflow-hidden`}
+          >
+            <ul
+              className={`min-h-0 flex flex-col gap-5 text-[0.9rem] text-neutral-400 font-semibold`}
             >
-              {menu}
-            </li>
-          ))}
-        </ul>)}
+              {subMenus.map((menu) => (
+                <li
+                  key={menu}
+                  className="hover:text-neutral-700 transition-color"
+                >
+                  {menu}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </div>
     </div>
   );
