@@ -1,0 +1,15 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .card-transition {
+    --ease: cubic-bezier(0.34, 1.56, 0.95, 0.88);
+
+    @apply duration-400 ease-[var(--ease)];
+  }
+}
+
+@layer components {
+  .card-row {
+    @apply grow-1 h-[100%] hover:h-[125%] flex gap-1 will-change-[height] transition-[height];
+  }
+}

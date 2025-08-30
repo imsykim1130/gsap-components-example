@@ -70,6 +70,14 @@ perspective 를 적용하면 z 값에 따라 요소가 작아 보이거나 커 �
 - ::after, ::before 요소를 활용하여 border 색상, 배경 색상 변경 애니메이션 구현
 
 ## Header 2
+
 🔥 https://gsap-components-example.vercel.app/header/2
 
 `:has` 를 사용하여 hover 된 요소 이외의 다른 요소를 흐리게 하여 hover 된 요소를 강조
+
+## Card 2
+
+🔥 https://gsap-components-example.vercel.app/card/2
+
+- `flex-grow` 를 동일한 값으로 설정하여 width(height) 비율에 따라 각 엘리먼트의 width(height)가 할당되도록 함.
+  `flex-grow` 만 설정하면 `flex-basis` 는 `auto` 값이 유지되기 때문에 width(height) 값이 참조된다.
