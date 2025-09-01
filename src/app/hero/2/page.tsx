@@ -125,7 +125,7 @@ const Page = () => {
     );
 
     tl.to(
-      ".card",
+      ".hero2-card",
       {
         duration: 10,
         stagger: 1.2,
@@ -191,7 +191,7 @@ const Page = () => {
       {cards.map((card, index) => (
         <div
           key={card.name}
-          className="card absolute w-screen h-screen translate-y-1/2  bottom-0 left-0 origin-bottom rotate-z-90"
+          className="hero2-card absolute w-screen h-screen translate-y-1/2  bottom-0 left-0 origin-bottom rotate-z-90"
         >
           <Card
             {...card}
