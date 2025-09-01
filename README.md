@@ -1,6 +1,6 @@
-# gsap 애니메이션 컴포넌트 모음
+# 애니메이션 컴포넌트 모음
 
-gsap 라이브러리를 이용하여 애니메이션이 적용된 다양한 컴포넌트(header, footer, navigation...) 구현 모음 및 배운 내용 정리
+애니메이션이 적용된 다양한 컴포넌트(header, footer, navigation...) 구현 모음 및 배운 내용 정리
 
 ## ✅ Header1
 
@@ -69,15 +69,24 @@ perspective 를 적용하면 z 값에 따라 요소가 작아 보이거나 커 �
 
 - ::after, ::before 요소를 활용하여 border 색상, 배경 색상 변경 애니메이션 구현
 
-## Header 2
+## ✅ Header 2
 
 🔥 https://gsap-components-example.vercel.app/header/2
 
 `:has` 를 사용하여 hover 된 요소 이외의 다른 요소를 흐리게 하여 hover 된 요소를 강조
 
-## Card 2
+## ✅ Card 2
 
 🔥 https://gsap-components-example.vercel.app/card/2
 
 - `flex-grow` 를 동일한 값으로 설정하여 width(height) 비율에 따라 각 엘리먼트의 width(height)가 할당되도록 함.
   `flex-grow` 만 설정하면 `flex-basis` 는 `auto` 값이 유지되기 때문에 width(height) 값이 참조된다.
+
+## ✅ Hero 3
+
+🔥 https://gsap-components-example.vercel.app/hero/3
+
+- `setTimeout` 을 이용한 infinite vertical carousel 구현
+- 애니메이션을 위해 추가된 기존 요소와 같은 크기의 요소는 `area-hidden` 으로 accessibility tree 에서 해당 요소를 없앰
+
+![](public/hero3.png)
