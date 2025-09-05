@@ -93,6 +93,8 @@ perspective 를 적용하면 z 값에 따라 요소가 작아 보이거나 커 �
 
 ## ✅ Carousel 1
 
+🔥 https://gsap-components-example.vercel.app/carousel/1
+
 gsap 의 `Draggable` 플러그인으로 드래그 가로 캐러셀 구현
 
 ```javascript
