@@ -90,3 +90,28 @@ perspective 를 적용하면 z 값에 따라 요소가 작아 보이거나 커 �
 - 애니메이션을 위해 추가된 기존 요소와 같은 크기의 요소는 `area-hidden` 으로 accessibility tree 에서 해당 요소를 없앰
 
 ![](public/hero3.png)
+
+## ✅ Carousel 1
+
+gsap 의 `Draggable` 플러그인으로 드래그 가로 캐러셀 구현
+
+```javascript
+// scroller : 드래그 할 스크롤
+// wrapper : 스크롤 되는 요소
+Draggable.create(scroller, {
+  type: "x",
+  bounds: {
+    minX: gap,
+    maxX: timelineWidth - scrollerWidth - gap,
+  },
+  onDrag() {
+    const progress = (this.x - gap) / maxDragX;
+    const wrapperX = -400 * (timelineWidth / 100) * progress;
+
+    moveX(wrapperX);
+  },
+});
+```
+
+- 드래그마다 gsap.to 를 사용하여 캐러셀 엘리먼트 이동시킬 때 최적화를 위해 `to` 대신 `quickTo` 를 사용하는 것이 좋다.(짧은 간격으로 to 호출하는 경우 quickTo 를 사용하는 것이 권장됨. ex. 마우스 포인터를 트래킹하는 엘리먼트)
+- 엘리먼트 삭제: `el.remove()`
