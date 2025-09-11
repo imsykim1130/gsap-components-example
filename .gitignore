@@ -39,3 +39,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+/src/app/(components)
+/src/app/canvas
+/src/app/hero/1
+# /src/components
