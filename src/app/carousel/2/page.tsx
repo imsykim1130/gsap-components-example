@@ -7,11 +7,14 @@ import Link from "next/link";
 
 import { cards } from "./(constants)";
 import Card from "./(components)/Card";
+import useMediaQuery from "./(hooks)/useMediaQuery";
 
 const Page = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
   const [index, setIndex] = useState<number>(0);
+  const [clicked, setClicked] = useState<boolean>(false);
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   const dragRef = useRef<{
     start: number | null;
@@ -54,13 +57,14 @@ const Page = () => {
     const prevMove = dragRef.current.prev - dragRef.current.start;
     const nowMove = e.clientX - dragRef.current.start;
 
-    const newr = dragRef.current.rotated - (prevMove - nowMove) * 0.1;
+    const times = isMobile ? 0.3 : 0.2;
+
+    const newr = dragRef.current.rotated - (prevMove - nowMove) * times;
 
     dragRef.current.prev = e.clientX;
     dragRef.current.rotated = newr;
 
     gsap.to(carouselRef.current, {
-      duration: 0.3,
       ease: "none",
       rotateY: newr,
     });
@@ -71,6 +75,9 @@ const Page = () => {
       rotateY: newRotate,
       duration: 0.8,
       ease: "expo",
+      onStart() {
+        changeIndex(cards.length, newRotate);
+      },
       onComplete() {
         dragRef.current.rotated = newRotate;
         dragRef.current.snapRotated = newRotate;
@@ -78,14 +85,13 @@ const Page = () => {
     });
   });
 
-  const changeIndex = (
-    newRotate: number,
-    cardCount: number,
-    stepAngle: number
-  ) => {
-    if (dragRef.current.snapRotated !== newRotate) {
+  const changeIndex = (cardCount: number, finalRotated: number) => {
+    const stepAngle = 360 / cardCount;
+
+    // 이전 회전 각도와 현재 각도를 비교하여 인덱스 변경
+    if (dragRef.current.snapRotated !== finalRotated) {
       const changedIndex =
-        -(newRotate - dragRef.current.snapRotated) / stepAngle;
+        -(finalRotated - dragRef.current.snapRotated) / stepAngle;
 
       setIndex((index) => {
         const newIndex = gsap.utils.wrap(0, cardCount, index + changedIndex);
@@ -96,7 +102,7 @@ const Page = () => {
 
   // effect
   useEffect(() => {
-    const el = carouselRef.current;
+    const el = containerRef.current;
     if (!el) return;
 
     gsap.utils.toArray<HTMLDivElement>(".carousel-2-card").forEach((el, i) => {
@@ -109,13 +115,15 @@ const Page = () => {
       el.setPointerCapture(e.pointerId); // move/up 요소로 고정 캡처
       dragRef.current.start = e.clientX;
       dragRef.current.prev = e.clientX;
+      setClicked(true);
     };
 
     const onPointerMove = (e: PointerEvent) => {
       if (!el.hasPointerCapture?.(e.pointerId)) return;
       if (e.buttons === 0) return onPointerUp(e);
       if (dragRef.current.start === null) return;
-      rotateCarousel(e as unknown as MouseEvent);
+
+      rotateCarousel(e);
     };
 
     const onPointerUp = (e: PointerEvent) => {
@@ -124,6 +132,7 @@ const Page = () => {
 
       dragRef.current.start = null;
       dragRef.current.prev = null;
+      setClicked(false);
 
       const stepAngle = 360 / cards.length;
       const rotated = gsap.getProperty(
@@ -134,7 +143,6 @@ const Page = () => {
       const snapRotate = steps * stepAngle;
 
       snapCard(snapRotate);
-      changeIndex(snapRotate, cards.length, stepAngle);
     };
 
     el.addEventListener("pointerdown", onPointerDown);
@@ -148,7 +156,7 @@ const Page = () => {
       el.removeEventListener("pointerup", onPointerUp);
       el.removeEventListener("pointercancel", onPointerUp);
     };
-  }, []);
+  }, [rotateCarousel, snapCard]);
 
   useGSAP(() => {
     // title animation
@@ -163,14 +171,25 @@ const Page = () => {
 
   return (
     <main
-      ref={containerRef}
-      className={`bg-black w-full h-screen overflow-hidden flex flex-col justify-center items-center  font-montserrat perspective-[900px]`}
+      className={`bg-black w-full h-screen overflow-hidden flex flex-col justify-center items-center font-montserrat perspective-[900px]`}
     >
+      <div className="absolute bottom-0 left-0 w-full h-[40vh] bg-gradient-to-t from-white to-white/0 opacity-30"></div>
+
       {/* cards */}
-      <div ref={carouselRef} className="transform-3d relative w-full h-[50vh]">
-        {cards.map((card) => (
-          <Card key={card.img} zIndex={card.zIndex} img={card.img} />
-        ))}
+      <div
+        ref={containerRef}
+        className={`transform-3d relative w-full h-[50vh] ${
+          clicked ? "cursor-grabbing" : "cursor-grab"
+        }`}
+      >
+        <div
+          ref={carouselRef}
+          className="transform-3d absolute inset-0 select-none"
+        >
+          {cards.map((card) => (
+            <Card key={card.img} zIndex={card.zIndex} img={card.img} />
+          ))}
+        </div>
       </div>
 
       <div className="absolute z-40 text-white flex flex-col gap-4 items-center ">
