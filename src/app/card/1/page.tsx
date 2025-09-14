@@ -3,6 +3,8 @@ import { useRef, useState } from "react";
 import Card from "./(components)/Card";
 import ButtonWithTooltip from "./(components)/ButtonWithTooltip";
 
+import "./style.scss";
+
 const Page = () => {
   const [cards, setCards] = useState([
     { id: 1, name: "Clear Scope", price: "$40", isNew: false },

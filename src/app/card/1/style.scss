@@ -1,0 +1,34 @@
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid #dedede;
+  border-radius: 1rem;
+  z-index: 0;
+}
+
+.card.new::before {
+  animation: green-border 1.3s ease-in-out;
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid #ff00006b;
+  border-radius: 1rem;
+  background: rgba(254, 140, 140, 0.2);
+  z-index: 1;
+  mask: linear-gradient(-45deg, transparent 20%, black 50%, transparent 80%);
+  mask-repeat: no-repeat;
+  animation: move-gradient 1.4s ease-in 1s infinite;
+}
+
+@keyframes move-gradient {
+  0% {
+    mask-position: -600px;
+  }
+  100% {
+    mask-position: 600px;
+  }
+}
