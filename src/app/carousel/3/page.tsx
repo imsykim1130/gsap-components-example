@@ -1,16 +1,12 @@
-/* 
-  데스크탑 환경에서 드래그 하지 않고 마우스 위치에 따라 자동으로 드래그를 해주는 캐러셀
-  마우스로 가로 드래깅은 불편한 경우가 많은데 이를 해결하기 위함
-  마우스를 올려놓아도 드래그가 된다는 것을 알려주기 위해서 
-
-*/
 "use client";
+
+import Image from "next/image";
 
 import { useGSAP } from "@gsap/react";
 import { useRef } from "react";
-
 import gsap from "gsap";
-import Image from "next/image";
+import { Draggable, InertiaPlugin } from "gsap/all";
+gsap.registerPlugin(Draggable, InertiaPlugin);
 
 const Page = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -37,6 +33,8 @@ const Page = () => {
       const cards = Array.from<HTMLDivElement>(
         container.querySelectorAll(".card")
       );
+      const carouselWidth = cards[0].clientWidth * cards.length;
+
       const carousel = container.querySelector<HTMLDivElement>(".carousel");
       const left = container.querySelector<HTMLDivElement>(".left");
       const right = container.querySelector<HTMLDivElement>(".right");
@@ -49,29 +47,58 @@ const Page = () => {
         x: (index) => index * cardWidth,
         width: cardWidth,
       });
+      gsap.set(left, {
+        visibility: "hidden",
+      });
 
+      const commonVars: gsap.TweenVars = {
+        opacity: 0,
+        duration: 0.8,
+        ease: "power1.inOut",
+        repeat: -1,
+        yoyo: true,
+        paused: true,
+      };
+
+      moveRef.current.leftTw = gsap.fromTo(
+        left,
+        {
+          opacity: 1,
+        },
+        commonVars
+      );
+
+      moveRef.current.rightTw = gsap.fromTo(
+        right,
+        {
+          opacity: 1,
+        },
+        commonVars
+      );
+
+      // 리사이징 할 때 다시 설정해야 하는 것들을 실행하는 함수
       const init = () => {
-        // 스크롤 할 길이 계산
-        const carouselWidth = cards[0].clientWidth * cards.length;
         const containerWidth = container.clientWidth;
         const scroll = carouselWidth - containerWidth;
 
-        // 스크롤 상태 초기화
-        gsap.set(carousel, {
-          x: 0,
-        });
-
         // 애니메이션 초기화
-        const prevTw = moveRef.current.tw;
-        if (prevTw) {
-          prevTw.kill();
-        }
+        moveRef.current.tw?.kill();
+        moveRef.current.leftTw?.progress(0);
+        moveRef.current.rightTw?.progress(0);
+
+        // 캐러셀 이동 버튼 상태 초기화
+        gsap.set(left, { visibility: "hidden" });
+        gsap.set(right, { visibility: "visible" });
 
         //  캐러샐 내용의 길이가 캐러셀 컨테이너의 길이보다 작을 경우 애니메이션 삭제(스크롤 동작 x)
         if (scroll <= 0) {
           moveRef.current.tw = undefined;
           return;
         }
+
+        gsap.set(carousel, {
+          x: 0,
+        });
 
         moveRef.current.tw = gsap.to(carousel, {
           paused: true,
@@ -99,50 +126,35 @@ const Page = () => {
             }
           },
         });
+
+        Draggable.get(carousel)?.kill();
+        Draggable.create(carousel, {
+          type: "x",
+          bounds: { minX: -scroll, maxX: 0 },
+          inertia: true,
+          onDrag() {
+            const percent = -this.x / scroll;
+            console.log(percent);
+            if (moveRef.current.tw) {
+              moveRef.current.tw.progress(percent);
+            }
+          },
+        });
       };
 
-      moveRef.current.leftTw = gsap.fromTo(
-        left,
-        {
-          opacity: 1,
-        },
-        {
-          opacity: 0,
-          duration: 0.5,
-          ease: "power1.in",
-          repeat: -1,
-          yoyo: true,
-          paused: true,
-        }
-      );
-
-      moveRef.current.rightTw = gsap.fromTo(
-        right,
-        {
-          opacity: 1,
-        },
-        {
-          opacity: 0,
-          duration: 0.5,
-          ease: "power1.in",
-          repeat: -1,
-          yoyo: true,
-          paused: true,
-        }
-      );
-
       init();
-      gsap.set(left, {
-        visibility: "hidden",
-      });
 
       window.addEventListener("resize", init);
 
       return () => {
         window.removeEventListener("resize", init);
+        moveRef.current.tw?.kill();
+        moveRef.current.leftTw?.kill();
+        moveRef.current.rightTw?.kill();
+        Draggable.get(carousel)?.kill();
       };
     },
-    { scope: containerRef }
+    { scope: containerRef, dependencies: [] }
   );
 
   return (
@@ -154,16 +166,14 @@ const Page = () => {
         <button className="text-[0.9rem]">더 보기</button>
       </div>
       {/* carousel */}
-      <div
-        ref={containerRef}
-        className="relative w-full overflow-hidden bg-amber-100"
-      >
+      <div ref={containerRef} className="relative w-full overflow-hidden">
         {/* items */}
         <div className="carousel h-full">
           {Array.from({ length: 5 }).map((_, index) => (
             <Card
               key={index}
-              img={`/sunglass/sunglass-${index + 1}.jpg`}
+              lookImg={`/sunglass/sunglass-${index + 1}.jpg`}
+              itemImg={`/sunglass/sunglass-${index + 1}-front.png`}
               width={cardWidth}
               height={cardWidth}
               name="퓨리-01"
@@ -173,7 +183,7 @@ const Page = () => {
         </div>
         {/* left */}
         <div
-          className="left absolute left-0 top-0 w-30 h-full flex items-center justify-center select-none bg-white blur-[100px]"
+          className="left absolute left-0 top-0 w-30 h-full flex items-center justify-center select-none"
           onMouseEnter={() => {
             moveRef.current.tw?.reverse();
             moveRef.current.leftTw?.play();
@@ -184,11 +194,25 @@ const Page = () => {
             gsap.set(e.target, { opacity: 1 });
           }}
         >
-          PREV
+          <div className="py-10 px-5 bg-white/30 rounded-full">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="45"
+              viewBox="0 0 24 45"
+              fill="none"
+              className="black"
+            >
+              <path
+                d="M1.18628 22.6066L23.1066 0.686279M1.64642 22.3536L23.5667 44.2739"
+                stroke="black"
+              />
+            </svg>
+          </div>
         </div>
         {/* right */}
         <div
-          className="right absolute right-0 top-0 w-30 h-full flex justify-center items-center select-none bg-white blur-[100px]"
+          className="right absolute right-0 top-0 w-30 h-full flex justify-center items-center select-none"
           onMouseEnter={() => {
             moveRef.current.tw?.play();
             moveRef.current.rightTw?.play();
@@ -198,25 +222,38 @@ const Page = () => {
             moveRef.current.rightTw?.pause();
             gsap.set(e.target, { opacity: 1 });
           }}
-        ></div>
+        >
+          <div className="py-10 px-5 bg-white/40 rounded-full">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="45"
+              viewBox="0 0 24 45"
+              fill="none"
+              className="rotate-y-180"
+            >
+              <path
+                d="M1.18628 22.6066L23.1066 0.686279M1.64642 22.3536L23.5667 44.2739"
+                stroke="black"
+              />
+            </svg>
+          </div>
+        </div>
       </div>
-
-      {/* <div className="flex gap-10 justify-center mt-10 text-md font-medium">
-        <button>prev</button>
-        <button>next</button>
-      </div> */}
     </main>
   );
 };
 
 const Card = ({
-  img,
+  lookImg,
+  itemImg,
   width,
   height,
   name,
   price,
 }: {
-  img: string;
+  lookImg: string;
+  itemImg: string;
   width: number;
   height: number;
   name: string;
@@ -226,8 +263,18 @@ const Card = ({
     <article
       className={`card absolute top-0 left-0 h-full group cursor-pointer`}
     >
-      <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-[opacity]"></div>
-      <Image src={img} width={width} height={height} alt="" />
+      {/* <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-[opacity]"></div> */}
+      {/* look */}
+      <Image src={lookImg} width={width} height={height} alt="" />
+      {/* item */}
+      <Image
+        src={itemImg}
+        width={width}
+        height={height}
+        alt=""
+        className="absolute top-0 right-0 opacity-0 group-hover:opacity-95 transition-[opacity] duration-300"
+      />
+
       <div className="absolute bottom-10 left-10 text-[0.75rem] text-neutral-800">
         <h3>{name}</h3>
         <p>₩{price}</p>

@@ -124,3 +124,40 @@ Draggable.create(scroller, {
 
 - `setPointerCapture` : 포인터가 특정 요소에 눌려있는 동안 움직임이나 해제 이벤트를 그 요소에게 독점적으로 전달함.
   요소 밖에서 mouseup 을 받지 못해 상태가 꼬이는 것을 방지.
+
+# Carousel 3
+
+🔥 https://gsap-components-example.vercel.app/carousel/3
+
+데스크탑 환경에서 드래그 하지 않고 마우스 위치에 따라 자동으로 드래그를 해주는 캐러셀. 동시에 기존의 드래그로 캐러샐을 이동시키는 것도 구현.
+
+- `gsap.to()` 의 play, reverse 메서드를 사용하여 캐러셀이 앞,뒤로 움직이는 것 같은 동작 구현. duration 을 스크롤 할 길이에 비례하도록 하여 윈도우 크기가 달라져도 캐러셀 이동 속도는 동일하게 함.
+
+```javascript
+moveRef.current.tw = gsap.to(carousel, {
+  paused: true,
+  x: -scroll,
+  duration: scroll * 0.008,
+  ease: "none",
+  onUpdate() {
+    const progress = this.progress();
+    if (progress === 0) {
+      gsap.set(left, {
+        visibility: "hidden",
+      });
+    } else if (progress === 1) {
+      gsap.set(right, {
+        visibility: "hidden",
+      });
+    } else {
+      if (gsap.getProperty(left, "visibility") === "hidden") {
+        gsap.set(left, { visibility: "visible" });
+      }
+
+      if (gsap.getProperty(right, "visibility") === "hidden") {
+        gsap.set(right, { visibility: "visible" });
+      }
+    }
+  },
+});
+```
