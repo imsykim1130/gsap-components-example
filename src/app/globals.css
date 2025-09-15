@@ -38,21 +38,6 @@
   @apply opacity-0 invisible group-hover:opacity-100 group-hover:visible group-hover:translate-y-2;
 }
 
-@keyframes green-border {
-  0% {
-    border-color: #dedede;
-    background-color: #00ac0600;
-  }
-  50% {
-    border-color: #00ac06;
-    background-color: #00ac0620;
-  }
-  100% {
-    border-color: #dedede;
-    background-color: #00ac0600;
-  }
-}
-
 @layer components {
   .nav {
     @apply p-5 space-y-5 bg-white border-1 border-neutral-200 rounded-2xl shadow-sm;

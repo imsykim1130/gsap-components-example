@@ -32,3 +32,18 @@
     mask-position: 600px;
   }
 }
+
+@keyframes green-border {
+  0% {
+    border-color: #dedede;
+    background-color: #00ac0600;
+  }
+  50% {
+    border-color: #00ac06;
+    background-color: #00ac0620;
+  }
+  100% {
+    border-color: #dedede;
+    background-color: #00ac0600;
+  }
+}
