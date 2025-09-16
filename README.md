@@ -73,7 +73,8 @@ perspective 를 적용하면 z 값에 따라 요소가 작아 보이거나 커 �
 
 🔥 https://gsap-components-example.vercel.app/header/2
 
-`:has` 를 사용하여 hover 된 요소 이외의 다른 요소를 흐리게 하여 hover 된 요소를 강조
+- `:has` 를 사용하여 hover 된 요소 이외의 다른 요소를 흐리게 하여 hover 된 요소를 강조
+- `grid-template-rows` 의 값을 이용하여 드랍다운 메뉴에 애니메이션 적용
 
 ## ✅ Card 2
 
