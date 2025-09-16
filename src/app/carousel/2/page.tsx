@@ -17,8 +17,8 @@ const Page = () => {
   const isMobile = useMediaQuery("(max-width: 768px)");
 
   const dragRef = useRef<{
-    start: number | null;
-    prev: number | null;
+    start: number | null; // mouse position
+    prev: number | null; // mouse positon
     rotated: number;
     snapRotated: number;
   }>({
@@ -37,7 +37,8 @@ const Page = () => {
       duration: 0.6,
       ease: "power3.out",
     });
-
+    dragRef.current.rotated -= 60;
+    dragRef.current.snapRotated -= 60;
     setIndex((index) => gsap.utils.wrap(0, cardCount, index + 1));
   });
 
@@ -47,7 +48,8 @@ const Page = () => {
       duration: 0.6,
       ease: "power3.out",
     });
-
+    dragRef.current.rotated += 60;
+    dragRef.current.snapRotated += 60;
     setIndex((index) => gsap.utils.wrap(0, cardCount, index - 1));
   });
 
@@ -57,17 +59,18 @@ const Page = () => {
     const prevMove = dragRef.current.prev - dragRef.current.start;
     const nowMove = e.clientX - dragRef.current.start;
 
-    const times = isMobile ? 0.3 : 0.2;
+    const times = isMobile ? 0.3 : 0.1;
 
     const newr = dragRef.current.rotated - (prevMove - nowMove) * times;
-
-    dragRef.current.prev = e.clientX;
-    dragRef.current.rotated = newr;
+    console.log(newr);
 
     gsap.to(carouselRef.current, {
       ease: "none",
       rotateY: newr,
     });
+
+    dragRef.current.prev = e.clientX;
+    dragRef.current.rotated = newr;
   });
 
   const snapCard = contextSafe((newRotate: number) => {
@@ -121,7 +124,7 @@ const Page = () => {
     const onPointerMove = (e: PointerEvent) => {
       if (!el.hasPointerCapture?.(e.pointerId)) return;
       if (e.buttons === 0) return onPointerUp(e);
-      if (dragRef.current.start === null) return;
+      if (dragRef.current.start === null || !clicked) return;
 
       rotateCarousel(e);
     };
